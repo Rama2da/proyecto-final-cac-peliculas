@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-@WebServlet("/pelicula")
+@WebServlet("/peliculas")
 public class ControladorPelicula extends HttpServlet {
 	
 	/**
@@ -70,5 +70,53 @@ public class ControladorPelicula extends HttpServlet {
 		}
 		
 	}
+	
+protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+        
+        try {
+        Pelicula pelicula = objectMapper.readValue(req.getReader(), Pelicula.class);
+        peliculaServicio.addPelicula(pelicula);
+        resp.setStatus(HttpServletResponse.SC_CREATED);
+        }
+        catch(SQLException|ClassNotFoundException e) {
+            
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+    
+protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+        
+        try {
+        Pelicula pelicula = objectMapper.readValue(req.getReader(), Pelicula.class);
+        peliculaServicio.updatePelicula(pelicula);
+        resp.setStatus(HttpServletResponse.SC_OK);
+        }
+        catch(SQLException|ClassNotFoundException e) {
+            
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+@Override
+protected void doDelete(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+    
+    String pathInfo = req.getPathInfo();
+    try {
+            
+        if(pathInfo!=null&&pathInfo.split("/").length>1) 
+        {        
+            int id= Integer.parseInt(pathInfo.split("/")[1]);
+            peliculaServicio.deletePelicula(id);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
+        else 
+        {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    } catch(SQLException|ClassNotFoundException e) {
+        
+        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
+}
 
 }
