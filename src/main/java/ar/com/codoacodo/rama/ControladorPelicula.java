@@ -9,13 +9,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-
 @WebServlet("/peliculas")
 public class ControladorPelicula extends HttpServlet {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private PeliculaServicio peliculaServicio;
 	private ObjectMapper objectMapper;
@@ -71,12 +67,12 @@ public class ControladorPelicula extends HttpServlet {
 		
 	}
 	
-protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
         
         try {
-        Pelicula pelicula = objectMapper.readValue(req.getReader(), Pelicula.class);
-        peliculaServicio.addPelicula(pelicula);
-        resp.setStatus(HttpServletResponse.SC_CREATED);
+        	Pelicula pelicula = objectMapper.readValue(req.getReader(), Pelicula.class);
+        	peliculaServicio.addPelicula(pelicula);
+        	resp.setStatus(HttpServletResponse.SC_CREATED);
         }
         catch(SQLException|ClassNotFoundException e) {
             
@@ -84,12 +80,12 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws Se
         }
     }
     
-protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
         
         try {
-        Pelicula pelicula = objectMapper.readValue(req.getReader(), Pelicula.class);
-        peliculaServicio.updatePelicula(pelicula);
-        resp.setStatus(HttpServletResponse.SC_OK);
+        	Pelicula pelicula = objectMapper.readValue(req.getReader(), Pelicula.class);
+        	peliculaServicio.updatePelicula(pelicula);
+        	resp.setStatus(HttpServletResponse.SC_OK);
         }
         catch(SQLException|ClassNotFoundException e) {
             
@@ -97,26 +93,28 @@ protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws Ser
         }
     }
 
-@Override
-protected void doDelete(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
     
-    String pathInfo = req.getPathInfo();
+		String pathInfo = req.getPathInfo();
     try {
             
-        if(pathInfo!=null&&pathInfo.split("/").length>1) 
-        {        
+        if(pathInfo!=null&&pathInfo.split("/").length>1){
+        	
             int id= Integer.parseInt(pathInfo.split("/")[1]);
             peliculaServicio.deletePelicula(id);
             resp.setStatus(HttpServletResponse.SC_OK);
         }
-        else 
-        {
+        
+        else{
+        	
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
-    } catch(SQLException|ClassNotFoundException e) {
+       } 
+    	catch(SQLException|ClassNotFoundException e) {
         
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        
     }
-}
-
+  }
 }

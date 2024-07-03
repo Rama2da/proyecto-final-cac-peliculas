@@ -102,8 +102,7 @@ public class PeliculaServicio {
 	
 	public void updatePelicula (Pelicula pelicula) throws SQLException,ClassNotFoundException {
 		Connection con=conexion.getConnexion();
-		String sql = "UPDATE pelicula SET titulo = ?, genero = ?, duracion = ?, director = ?, reparto = ?, sinopsis = ?, imagen = ?"
-				+ "WHERE id = ?";
+		String sql = "UPDATE pelicula SET titulo = ?, genero = ?, duracion = ?, director = ?, reparto = ?, sinopsis = ?, imagen = ?, WHERE id = ?";
 		PreparedStatement ps=con.prepareStatement(sql);
 		ps.setString(1, pelicula.getTitulo());
 		ps.setString(2, pelicula.getGenero());
